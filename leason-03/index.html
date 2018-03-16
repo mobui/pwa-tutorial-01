@@ -1,0 +1,89 @@
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta charset="utf-8">
+        <!-- PWA manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Meta tag for mobile device -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Add to home screen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Hello World PWA">
+        <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+        <!-- Windows related -->
+        <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+        <meta name="msapplication-TileColor" content="#386CC1">
+        <meta name="theme-color" content="#164391">
+    
+        <title>Hello World App</title>
+
+        <script 
+            src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js" 
+            id="sap-ui-bootstrap" 
+            data-sap-ui-preload="async"
+            data-sap-ui-xx-waitForTheme="true"
+            data-sap-ui-debug="true"
+            data-sap-ui-theme="sap_belize"
+            data-sap-ui-libs="sap.m">
+        </script>
+
+        <script>  
+            if ('serviceWorker' in navigator) {
+                // браузер поддерживает Service Workers API
+                window.addEventListener('load', function() {
+                    // Выполянем региатрацию Service Workers
+                    navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+                    // Региастрация выполнена успешно
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function(err) {
+                    // Регистрация не удалась
+                    console.log('ServiceWorker registration failed: ', err);
+                    });
+                });
+            }
+        </script>
+
+        <script type="text/javascript">
+            sap.ui.getCore().attachInit(function () {
+                // create a mobile app and display page1 initially
+                var app = new sap.m.App("myApp", {
+                    initialPage: "page1"
+                });
+                // create the first page
+                var page1 = new sap.m.Page("page1", {
+                    title: "Hello World",
+                    showNavButton: false,
+                    content: new sap.m.Button({
+                        text: "Go to Page 2",
+                        press: function () {
+                            // navigate to page2
+                            app.to("page2");
+                        }
+                    })
+                });
+                // create the second page with a back button
+                var page2 = new sap.m.Page("page2", {
+                    title: "Hello Page 2",
+                    showNavButton: true,
+                    navButtonPress: function () {
+                        // go back to the previous page
+                        app.back();
+                    }
+                });
+                // add both pages to the app
+                app.addPage(page1).addPage(page2);
+                // place the app into the HTML document
+                app.placeAt("content");
+            });
+        </script>
+    </head>
+
+    <body class="sapUiBody" id="content">
+        <div id="splash-screen">
+            <h1>Hello World PWA application</h1>
+        </div>
+    </body>
+
+</html>
